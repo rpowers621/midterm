@@ -42,7 +42,7 @@ class Authentication {
 
   }
   void signInWithEmail(_email, context) async{
-    await Firebase.initializeApp();
+
     try{
     _auth.sendSignInLinkToEmail(
         email: _email,
@@ -87,7 +87,7 @@ class Authentication {
         codeSent: codeSent,
         codeAutoRetrievalTimeout: (String verificationId) {},
       );
-    print(_verificationId);
+    print("Id: $_verificationId");
   }
 
    void signInWithPhone(_sms, context) async{

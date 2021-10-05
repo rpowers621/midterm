@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:midterm/pages/register.dart';
 import 'package:midterm/pages/siginphone.dart';
+import 'package:midterm/pages/signinemailpassword.dart';
 import 'emailSignIn.dart';
 import 'loading.dart';
 import 'package:midterm/authentication.dart';
@@ -48,65 +49,12 @@ class _LoginState extends State<Login>{
 
   @override
   Widget build(BuildContext context){
-    final eInput = TextFormField(
-      autocorrect: false,
-      controller: _emailController,
-      validator: (value) {
-        if (value == null || value.isEmpty) {
-          return "Please enter your email";
-        }
-        return null;
-      },
-      decoration: const  InputDecoration(
-          labelText: "Email Address",
-          border: OutlineInputBorder(
-              borderRadius: BorderRadius.all(Radius.circular(15.0))),
-          hintText: "Enter Email"),
-    );
-    final pInput = TextFormField(
-      autocorrect: false,
-      controller: _passwordController,
-      validator: (value) {
-        if (value == null || value.isEmpty) {
-          return "Please enter your password";
-        }
-        return null;
-      },
-      obscureText: true,
-      decoration: const  InputDecoration(
-        labelText: "Password",
-        border: OutlineInputBorder(
-            borderRadius: BorderRadius.all(Radius.circular(15.0))),
-        hintText: "Enter Password",
-        suffixIcon: Padding(
-          padding: EdgeInsets.all(20),
-          child: Icon(Icons.lock_rounded),
-        )
-        ,
-
-      ),
-    );
-    final submit = OutlinedButton(
-      onPressed:(){
-        if(_formKey.currentState!.validate()){
-          ScaffoldMessenger.of(context)
-              .showSnackBar(const SnackBar(content: Text('Loading Data')));
-          _email = _emailController.text;
-          _password = _passwordController.text;
-
-          _emailController.clear();
-          _passwordController.clear();
-
-          setState(() {
-            _loading = true;
-            Authentication().signInEmailPassword(_email, _password, context);
-          });
-        }
-      },
-      child: const Text('Submit',
-          style: TextStyle(
-              color: Colors.amberAccent)),
-    );
+    final emailPassword = OutlinedButton(
+        onPressed: (){
+          Navigator.push(
+              context,MaterialPageRoute(builder: (con) => SignInEmailPassword()));
+        },
+        child: Text("Sign in with email and password"));
     final emailOnly = OutlinedButton(
         onPressed:(){
           Navigator.push(
@@ -148,14 +96,12 @@ class _LoginState extends State<Login>{
                     key: _formKey,
                     child: Column(
                       children: <Widget> [
-                        eInput,
-                        pInput,
-                        submit,
+                        emailPassword,
                         emailOnly,
-                        signin,
                         google,
                         phone,
-                        anon
+                        anon,
+                        signin,
                       ],
                     )
                 ),
