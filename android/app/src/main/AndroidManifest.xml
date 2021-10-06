@@ -1,5 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.midterm">
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
    <application
         android:label="midterm"
         android:icon="@mipmap/ic_launcher">
@@ -39,6 +42,7 @@
             android:value="2" />
        <meta-data android:name="safetynet_api_key"
            android:value="AIzaSyCt09L3yXgXTpD5aSe-JPFLQkMxIjvCge0"/>
+
 
    </application>
 </manifest>

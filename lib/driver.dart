@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 class AppDriver extends StatelessWidget {
   AppDriver({Key? key}) : super(key: key);
 
-  //final FirebaseAuth _auth = FirebaseAuth.instance;
+
   @override
   Widget build(BuildContext context) {
     return Authentication().getAuthUser() == null ? const Login() : HomePage();

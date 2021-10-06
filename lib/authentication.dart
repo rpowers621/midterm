@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'driver.dart';
+import 'package:intl/intl.dart';
 
 class Authentication {
 
@@ -18,6 +19,11 @@ class Authentication {
 
   getAuthUser(){
     return _auth.currentUser;
+  }
+  getUserId(){
+    User? user =_auth.currentUser;
+    String id = user!.uid;
+    return id;
   }
    void signInEmailPassword(_email, _password, context) async{
     await Firebase.initializeApp();
@@ -119,7 +125,6 @@ class Authentication {
       accessToken: googleAuth.accessToken,
       idToken: googleAuth.idToken,
     );
-    print(credential);
     // Once signed in, return the UserCredential
     await FirebaseAuth.instance.signInWithCredential(credential);
     final QuerySnapshot result = await FirebaseFirestore.instance
@@ -127,12 +132,12 @@ class Authentication {
         .where('first_name', isEqualTo: googleUser.displayName)
         .limit(1)
         .get();
-    print(result.docs);
-    print(googleUser.email);
     final List <DocumentSnapshot> docs = result.docs;
     if (docs.isEmpty) {
       try {
-
+        var now =  DateTime.now();
+        var formatter =  DateFormat('dd/MM/yyyy');
+        String formattedDate = formatter.format(now);
         _db
             .collection("users")
             .doc()
@@ -140,7 +145,9 @@ class Authentication {
           "first_name": googleUser.displayName,
           "last_name": '',
           "role": 'customer',
-          "registration_deadline": DateTime.now(),
+          "url": '',
+          "uid" : credential,
+          "time" : formattedDate,
         })
             .then((value) => null)
             .onError((error, stackTrace) => null);
