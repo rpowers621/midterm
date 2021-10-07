@@ -111,7 +111,6 @@ class Authentication {
         codeSent: codeSent,
         codeAutoRetrievalTimeout: (String verificationId) {},
       );
-    print("Id: $_verificationId");
   }
 
    void signInWithPhone(_sms, context) async{
@@ -123,13 +122,11 @@ class Authentication {
        print(credential);
        final User? user = (await _auth.signInWithCredential(credential)).user;
 
-       Navigator.push(context,MaterialPageRoute(builder:  (context) => AppDriver()));
-     } catch (e) {
 
-       print(_verificationId);
+     } catch (e) {
        print(e);
      }
-
+     Navigator.push(context,MaterialPageRoute(builder:  (context) => AppDriver()));
   }
    void signInWithGoogle(context) async{
     final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
