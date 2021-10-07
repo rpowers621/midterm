@@ -71,8 +71,8 @@ class Splash_info extends StatelessWidget {
     return SplashScreen(
         seconds: 7,
         navigateAfterSeconds:  AppDriver(),
-        title: Text("Powers Fan Pages"),
-        loadingText: Text("Loading Powers"),
+        title: Text("User"),
+        loadingText: Text("Loading"),
 
         loaderColor: Colors.amberAccent,
         gradientBackground: const LinearGradient(

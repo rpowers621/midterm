@@ -86,7 +86,5 @@ class _UserPageState extends State<UserPage> {
     );
 
   }
-   void userInfo(uid)async{
-    String he = uid;
-  }
+
 }

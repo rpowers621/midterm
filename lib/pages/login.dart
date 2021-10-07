@@ -30,7 +30,7 @@ class _LoginState extends State<Login>{
         onPressed:(){
           Navigator.push(
               context,MaterialPageRoute(builder: (con) => EmailSignIn()));
-          ;
+
         }, child:const Text("Sign With Email",
         style: TextStyle(
             color: Colors.amberAccent)));
@@ -51,6 +51,14 @@ class _LoginState extends State<Login>{
       onPressed: (){
         Authentication().signInWithGoogle(context);
       } );
+    final facebook=  OutlinedButton.icon(
+        icon: Image.asset('assets/facebook.png', height: 20, width: 20,),
+        label: const Text("Sign in With Facebook",
+            style: TextStyle(
+                color: Colors.amberAccent)),
+        onPressed: (){
+          Authentication().signInWithFacebook(context);
+        } );
     final phone = OutlinedButton(
         onPressed:(){
           Navigator.push(
@@ -81,6 +89,7 @@ class _LoginState extends State<Login>{
                         emailPassword,
                         emailOnly,
                         google,
+                        facebook,
                         phone,
                         anon,
                         signin,

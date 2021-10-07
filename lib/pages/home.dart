@@ -5,6 +5,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:midterm/authentication.dart';
+import 'package:midterm/getuserdata.dart';
 import 'package:midterm/pages/userpage.dart';
 
 
@@ -85,7 +86,10 @@ class _HomePageState extends State<HomePage> {
                           child: RaisedButton.icon(
                               onPressed: () async {
                                 setState(() {
-                                  UserPage().userInfo(document['uid']);
+                                  GetUserData().userInfo(
+                                    document['first_name'],
+                                      document['url'],
+                                      document['uid']);
                                 });
 
                                //

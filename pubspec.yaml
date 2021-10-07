@@ -37,10 +37,12 @@ dependencies:
   firebase_auth: ^3.1.2
   cloud_firestore: ^2.5.3
   google_sign_in: ^4.5.9
+  flutter_facebook_auth: ^3.5.2
   sms_autofill: ^2.1.2
   image_picker: ^0.8.4+2
   firebase_storage: ^10.0.4
   intl: ^0.17.0
+  firebase_dynamic_links: ^2.0.10
 
 
 

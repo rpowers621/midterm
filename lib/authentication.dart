@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'driver.dart';
 import 'package:intl/intl.dart';
@@ -47,28 +49,44 @@ class Authentication {
     }
 
   }
-  void signInWithEmail(_email, context) async{
+  void signInWithEmail(_email) async{
 
-    try{
-    _auth.sendSignInLinkToEmail(
+      await _auth.sendSignInLinkToEmail(
         email: _email,
         actionCodeSettings: ActionCodeSettings(
-        url: "midterm-621.firebaseapp.com",
-        androidPackageName: "com.company.midterm621",
-        iOSBundleId: "com.company.midterm621",
-        handleCodeInApp: true,
-        androidMinimumVersion: "16",
-        androidInstallApp: true),
-    );
-    Navigator.push(context,MaterialPageRoute(builder:  (context) => AppDriver()));
-    }on FirebaseAuthException catch(e)
-    {}catch(e){
-      print(e);
-    }
-
+            url: "https://midterm-621.firebaseapp.com",
+            androidPackageName: "com.company.midterm621",
+            iOSBundleId: "com.company.midterm621",
+            handleCodeInApp: true,
+            androidMinimumVersion: "16",
+            androidInstallApp: true),
+      );
 
 
   }
+  handleLink(Uri link, _email, context) async {
+    if (link != null) {
+      final user = (await _auth.signInWithEmailLink(
+        email: _email,
+        emailLink: link.toString(),
+      ))
+          .user;
+      if (user != null) {
+        return true;
+
+      } else {
+        return false;
+      }
+
+    }else {
+       return false;
+    }
+  }
+
+
+
+
+
   Future<void>verifyPhone(_phoneNumber, context) async{
     PhoneVerificationCompleted verificationCompleted =
         (PhoneAuthCredential phoneAuthCredential) async {
@@ -114,18 +132,18 @@ class Authentication {
 
   }
    void signInWithGoogle(context) async{
-    final GoogleSignInAccount googleUser = await GoogleSignIn().signIn();
+    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
 
-    // Obtain the auth details from the request
-    final GoogleSignInAuthentication googleAuth = await googleUser
+
+    final GoogleSignInAuthentication googleAuth = await googleUser!
         .authentication;
 
-    // Create a new credential
+
     final credential = GoogleAuthProvider.credential(
       accessToken: googleAuth.accessToken,
       idToken: googleAuth.idToken,
     );
-    // Once signed in, return the UserCredential
+
     await FirebaseAuth.instance.signInWithCredential(credential);
     final QuerySnapshot result = await FirebaseFirestore.instance
         .collection('users')
@@ -164,6 +182,22 @@ class Authentication {
           context, MaterialPageRoute(builder: (con) => AppDriver()));
     }
   }
+
+  void signInWithFacebook(context) async{
+
+      final LoginResult fbUser = await FacebookAuth.instance.login();
+
+      final AuthCredential facebookCredential =
+          FacebookAuthProvider.credential(fbUser.accessToken!.token);
+
+      final userCredential =
+          await _auth.signInWithCredential(facebookCredential);
+
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (con) => AppDriver()));
+
+  }
+
     void signInAnon(context) async{
      _auth.signInAnonymously().then((result) {
          final User? user = result.user;
